@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <title>Альфа–Афиша</title>
+  <title>Альфа · Кредит и календарь платежей</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     * {
@@ -12,9 +12,9 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui,
-        sans-serif;
-      background: #101321;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        system-ui, sans-serif;
+      background: #101214;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -24,10 +24,10 @@
     .phone {
       width: 390px;
       height: 844px;
-      background: #f5f5f7;
       border-radius: 32px;
       overflow: hidden;
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+      background: #111216;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
       display: flex;
       flex-direction: column;
       position: relative;
@@ -37,22 +37,59 @@
       height: 20px;
       padding: 8px 16px 0;
       font-size: 11px;
-      color: #555;
+      color: #777;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
-    .app-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 20px 8px;
+    .header-title {
+      padding: 10px 20px 6px;
+      color: #e7e7ea;
+      font-size: 20px;
+      font-weight: 500;
+    }
+
+    .sheet {
+      flex: 1;
+      margin: 8px 10px 0;
+      border-radius: 30px;
       background: #f5f5f7;
+      padding: 16px 18px 10px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
     }
 
-    .app-bar-left,
-    .app-bar-right {
+    .sheet-inner {
+      flex: 1;
+      overflow-y: auto;
+      padding-bottom: 10px;
+    }
+
+    .ribbon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 10px;
+      font-size: 10px;
+      color: #fff;
+      background: #ff3b30;
+      border-radius: 999px;
+      align-self: center;
+      margin-bottom: 10px;
+    }
+
+    .top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .top-row-left,
+    .top-row-right {
       width: 40px;
       display: flex;
       align-items: center;
@@ -61,193 +98,165 @@
       color: #111;
     }
 
-    .app-bar-right {
+    .top-row-right {
       justify-content: flex-end;
     }
 
-    .app-bar-title {
-      text-align: center;
-      flex: 1;
-    }
-
-    .tag {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: #ff3b30;
-      color: #fff;
-      font-size: 10px;
-      margin-bottom: 4px;
-    }
-
-    .app-bar-title h1 {
-      font-size: 18px;
+    .top-row-title {
+      font-size: 17px;
       font-weight: 600;
-      margin-bottom: 2px;
+      text-align: center;
     }
 
-    .app-bar-title span {
+    .subtitle-muted {
       font-size: 11px;
-      color: #999;
-    }
-
-    .screen {
-      flex: 1;
-      overflow-y: auto;
-      padding: 12px 16px 0;
-    }
-
-    /* Карточка билета / афиши */
-
-    .ticket-card {
-      background: #ffffff;
-      border-radius: 24px;
-      padding: 16px;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
-      margin-bottom: 16px;
-    }
-
-    .ticket-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      color: #9a9ea8;
+      text-align: center;
       margin-bottom: 10px;
     }
 
-    .ticket-label {
-      font-size: 12px;
-      font-weight: 500;
-      color: #ff2e43;
+    /* экраны */
+
+    .screen {
+      display: none;
     }
 
-    .ticket-date {
-      font-size: 12px;
-      color: #888;
+    .screen-active {
+      display: block;
     }
 
-    .poster {
-      background: radial-gradient(circle at top left, #ff476c, #3a2cff);
-      border-radius: 18px;
-      padding: 16px;
-      color: #fff;
+    /* экран кредита */
+
+    .amount-label {
+      font-size: 13px;
+      color: #a0a3aa;
+      text-align: center;
+      margin-top: 6px;
+    }
+
+    .amount-main {
+      text-align: center;
+      font-size: 28px;
+      font-weight: 700;
+      margin-top: 4px;
+      margin-bottom: 8px;
+    }
+
+    .dashed-line {
+      border-top: 1px dashed #d9dadf;
+      margin: 4px 0 8px;
+    }
+
+    .progress-text {
+      text-align: center;
+      font-size: 12px;
+      color: #7b808a;
       margin-bottom: 14px;
-      position: relative;
-      overflow: hidden;
     }
 
-    .poster::before {
-      content: "";
-      position: absolute;
-      width: 140px;
-      height: 140px;
-      border-radius: 50%;
-      border: 22px solid rgba(255, 255, 255, 0.16);
-      right: -40px;
-      bottom: -40px;
-    }
-
-    .poster-title {
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 4px;
-      max-width: 70%;
-    }
-
-    .poster-subtitle {
-      font-size: 12px;
-      opacity: 0.9;
+    .shortcuts-row {
+      display: flex;
+      justify-content: center;
+      gap: 36px;
       margin-bottom: 16px;
     }
 
-    .poster-meta {
-      font-size: 11px;
+    .shortcut {
       display: flex;
-      flex-wrap: wrap;
-      gap: 6px 12px;
-      opacity: 0.9;
-    }
-
-    .poster-meta span {
-      display: inline-flex;
+      flex-direction: column;
       align-items: center;
-      gap: 4px;
-    }
-
-    .poster-meta-dot {
-      width: 4px;
-      height: 4px;
-      border-radius: 50%;
-      background: #fff;
-    }
-
-    .ticket-info {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 8px;
-      margin-bottom: 12px;
       font-size: 11px;
-    }
-
-    .info-label {
-      color: #a0a3aa;
-      margin-bottom: 2px;
-    }
-
-    .info-value {
       color: #111;
-      font-weight: 500;
+      cursor: default;
     }
 
-    .ticket-qr-row {
+    .shortcut-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 999px;
+      background: #f1f2f6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 6px;
+      font-size: 22px;
+    }
+
+    .shortcut.clickable {
+      cursor: pointer;
+    }
+
+    /* карточка ближайшего платежа */
+
+    .next-payment-card {
+      background: #f2f3f7;
+      border-radius: 22px;
+      padding: 14px 14px 14px;
+      margin-bottom: 14px;
+    }
+
+    .next-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .next-sub {
+      font-size: 11px;
+      color: #878a93;
+      margin-bottom: 10px;
+    }
+
+    .next-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-top: 10px;
-      border-top: 1px dashed #e1e2e6;
-      margin-top: 4px;
+      margin-bottom: 4px;
+      font-size: 13px;
     }
 
-    .qr-box {
-      width: 56px;
-      height: 56px;
-      border-radius: 16px;
-      border: 1px solid #e1e2e6;
+    .next-row strong {
+      font-weight: 600;
+    }
+
+    .next-row-label {
+      font-size: 11px;
+      color: #a0a3aa;
+    }
+
+    .next-row-muted {
+      font-size: 12px;
+      color: #a0a3aa;
+    }
+
+    .next-row.auto-second {
+      margin-top: 12px;
+    }
+
+    .info-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 999px;
+      border: 1px solid #d3d4da;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 10px;
-      color: #999;
-    }
-
-    .ticket-code {
       font-size: 12px;
-      color: #555;
-    }
-
-    .ticket-code span {
-      display: block;
-      font-size: 10px;
       color: #a0a3aa;
-      margin-bottom: 2px;
+      margin-left: 6px;
     }
 
     .primary-btn {
+      margin-top: 14px;
       width: 100%;
-      border: none;
-      border-radius: 20px;
+      border-radius: 22px;
       padding: 14px 16px;
-      background: #ff2e43;
+      border: none;
+      background: #000;
       color: #fff;
       font-size: 15px;
       font-weight: 600;
-      margin-bottom: 12px;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
     }
 
     .primary-btn:active {
@@ -255,71 +264,437 @@
       filter: brightness(0.95);
     }
 
-    .secondary-text {
-      font-size: 11px;
-      color: #9a9ea8;
-      text-align: center;
-      margin-bottom: 12px;
+    /* сегменты */
+
+    .segmented {
+      display: flex;
+      background: #e3e4ea;
+      border-radius: 18px;
+      padding: 4px;
+      margin-top: 12px;
+      margin-bottom: 8px;
+      font-size: 13px;
     }
 
-    /* Экран возврата */
+    .segmented button {
+      flex: 1;
+      border: none;
+      background: transparent;
+      padding: 6px 4px;
+      border-radius: 14px;
+      cursor: pointer;
+      color: #555;
+    }
 
-    .hidden {
+    .segmented button.active {
+      background: #fff;
+      color: #000;
+      font-weight: 600;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    }
+
+    .tab-section {
       display: none;
     }
 
-    #refund-screen {
-      padding: 32px 24px 0;
-      text-align: center;
+    .tab-section.active {
+      display: block;
     }
 
-    .refund-icon {
+    .action-list,
+    .history-list {
+      list-style: none;
+      margin-top: 6px;
+    }
+
+    .action-item,
+    .history-item {
+      display: flex;
+      align-items: center;
+      padding: 8px 0;
+      font-size: 13px;
+    }
+
+    .action-item-icon,
+    .history-item-icon {
+      width: 24px;
+      text-align: center;
+      margin-right: 10px;
+      font-size: 16px;
+    }
+
+    .action-item.clickable,
+    .history-item.clickable {
+      cursor: pointer;
+    }
+
+    .action-item.clickable:hover .action-item-label,
+    .history-item.clickable:hover .history-main {
+      text-decoration: underline;
+    }
+
+    .action-item-label {
+      flex: 1;
+      color: #111;
+    }
+
+    .history-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .history-title {
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+
+    .history-sub {
+      font-size: 11px;
+      color: #888b94;
+    }
+
+    .history-amount {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .history-date {
+      font-size: 11px;
+      color: #888b94;
+      margin-left: 8px;
+      white-space: nowrap;
+    }
+
+    .documents-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-top: 10px;
+      margin-bottom: 6px;
+    }
+
+    .doc-item {
+      display: flex;
+      align-items: center;
+      font-size: 13px;
+      padding: 4px 0;
+    }
+
+    .doc-icon {
+      width: 22px;
+      text-align: center;
+      margin-right: 8px;
+      font-size: 14px;
+    }
+
+    /* экран выбора счёта */
+
+    .select-summary {
+      font-size: 14px;
+      margin-bottom: 12px;
+      color: #3a3c45;
+    }
+
+    .accounts-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .account-card {
+      background: #f2f3f7;
+      border-radius: 22px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.1s ease, box-shadow 0.1s ease;
+    }
+
+    .account-card:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .account-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+    }
+
+    .account-label {
+      font-size: 12px;
+      color: #9a9ea8;
+      margin-bottom: 2px;
+    }
+
+    .account-amount {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .account-card-mini {
+      width: 68px;
+      height: 40px;
+      border-radius: 12px;
+      background: #ff4a3a;
+      color: #fff;
+      padding: 7px 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: flex-end;
+      font-size: 11px;
+    }
+
+    .account-card-mini span:first-child {
+      align-self: flex-start;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .account-bottom {
+      background: #dfe0e6;
+      padding: 8px 14px;
+      font-size: 12px;
+      color: #555;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .account-bottom span:last-child {
+      font-size: 16px;
+    }
+
+    /* экран календаря */
+
+    .calendar-header {
+      text-align: center;
+      margin-top: 4px;
+      margin-bottom: 12px;
+    }
+
+    .month-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .month-label {
+      font-weight: 600;
+    }
+
+    .year-label {
+      font-size: 11px;
+      color: #a0a3aa;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      grid-auto-rows: 26px;
+      gap: 4px;
+      font-size: 12px;
+      margin-bottom: 14px;
+    }
+
+    .day-cell {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #222;
+    }
+
+    .day-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 999px;
+      background: #ff3b30;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 11px;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .events-list {
+      list-style: none;
+    }
+
+    .event-item {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 10px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #ececf1;
+      cursor: pointer;
+    }
+
+    .event-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      margin-right: 10px;
+      color: #111;
+    }
+
+    .event-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .event-title {
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+
+    .event-sub {
+      font-size: 11px;
+      color: #888b94;
+    }
+
+    .event-right {
+      text-align: right;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .event-amount {
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .event-date {
+      font-size: 11px;
+      color: #888b94;
+    }
+
+    .add-row {
+      margin-top: 8px;
+      background: #f2f3f7;
+      border-radius: 18px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 13px;
+    }
+
+    .add-row span:last-child {
+      font-size: 20px;
+    }
+
+    /* экран детали платежа */
+
+    .detail-wrapper {
+      margin-top: 20px;
+      padding: 0 4px;
+    }
+
+    .detail-label {
+      font-size: 11px;
+      color: #848892;
+      margin-bottom: 4px;
+    }
+
+    .detail-row-main {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .detail-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .detail-icon {
       width: 72px;
       height: 72px;
-      border-radius: 999px;
-      background: #e6f8ed;
-      margin: 0 auto 16px;
+      border-radius: 24px;
+      background: #6ea6ff;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 34px;
-      color: #1f9b4c;
+      color: #111;
+      position: relative;
     }
 
-    .refund-title {
-      font-size: 20px;
+    .detail-name-block {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .detail-title {
+      font-size: 18px;
       font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .detail-sub {
+      font-size: 14px;
+      color: #8a8e97;
+    }
+
+    .detail-amount {
+      font-size: 22px;
+      font-weight: 700;
+      text-align: right;
+    }
+
+    .detail-date {
+      font-size: 14px;
+      color: #8a8e97;
+      text-align: right;
+      margin-top: 4px;
+    }
+
+    .detail-divider {
+      border-top: 1px solid #e0e1e6;
+      margin: 18px 0 10px;
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
       margin-bottom: 6px;
     }
 
-    .refund-amount {
-      font-size: 24px;
-      font-weight: 700;
-      color: #111;
-      margin-bottom: 10px;
+    .detail-row span:last-child {
+      font-weight: 500;
     }
 
-    .refund-desc {
-      font-size: 13px;
-      color: #6a6e77;
-      margin-bottom: 24px;
-    }
-
-    .refund-note {
-      font-size: 11px;
-      color: #9a9ea8;
-    }
-
-    /* Табы снизу */
+    /* нижняя навигация */
 
     .tabbar {
       height: 70px;
-      border-top: 1px solid #dedfe3;
+      border-top: 1px solid #1b1c1f;
       background: #ffffff;
       display: flex;
       justify-content: space-around;
       align-items: center;
-      padding-bottom: 10px;
+      padding-bottom: 6px;
     }
 
     .tab-item {
@@ -339,113 +714,6 @@
       color: #111;
       font-weight: 500;
     }
-
-    /* Модалка */
-
-    .modal-backdrop {
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      z-index: 10;
-    }
-
-    .modal {
-      width: 100%;
-      max-width: 320px;
-      background: #ffffff;
-      border-radius: 24px;
-      padding: 20px 18px 16px;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
-    }
-
-    .modal-title {
-      font-size: 17px;
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
-
-    .modal-subtitle {
-      font-size: 12px;
-      color: #7a7e89;
-      margin-bottom: 16px;
-    }
-
-    .field-label {
-      font-size: 11px;
-      color: #7a7e89;
-      margin-bottom: 4px;
-    }
-
-    .modal-input-wrap {
-      position: relative;
-      margin-bottom: 12px;
-    }
-
-    .modal-input {
-      width: 100%;
-      padding: 10px 12px;
-      border-radius: 14px;
-      border: 1px solid #d3d4da;
-      font-size: 15px;
-      outline: none;
-    }
-
-    .modal-input:focus {
-      border-color: #ff2e43;
-      box-shadow: 0 0 0 1px rgba(255, 46, 67, 0.2);
-    }
-
-    .modal-input-suffix {
-      position: absolute;
-      top: 50%;
-      right: 10px;
-      transform: translateY(-50%);
-      font-size: 12px;
-      color: #a0a3aa;
-    }
-
-    .modal-error {
-      font-size: 11px;
-      color: #ff2e43;
-      min-height: 14px;
-      margin-bottom: 6px;
-    }
-
-    .modal-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 8px;
-      margin-top: 6px;
-    }
-
-    .btn-text {
-      border: none;
-      background: transparent;
-      font-size: 14px;
-      color: #7a7e89;
-      padding: 6px 8px;
-      cursor: pointer;
-    }
-
-    .btn-primary-small {
-      border: none;
-      background: #ff2e43;
-      color: #fff;
-      border-radius: 14px;
-      padding: 8px 16px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .btn-primary-small:active {
-      filter: brightness(0.95);
-      transform: translateY(1px);
-    }
   </style>
 </head>
 <body>
@@ -455,101 +723,244 @@
       <div>LTE ◉ 76%</div>
     </div>
 
-    <!-- Верхняя панель -->
-    <header class="app-bar">
-      <div class="app-bar-left">‹</div>
-      <div class="app-bar-title">
-        <div class="tag">МГУ · Альфа</div>
-        <h1>Альфа–Афиша</h1>
-        <span>Билет на мероприятие</span>
+    <div class="header-title">Кредит</div>
+
+    <div class="sheet">
+      <div class="sheet-inner">
+
+        <!-- ЭКРАН 1. КРЕДИТ -->
+        <div id="screen-credit" class="screen screen-active">
+          <div class="ribbon">МГУ · Альфа</div>
+
+          <div class="top-row">
+            <div class="top-row-left">‹</div>
+            <div class="top-row-title">Автокредит</div>
+            <div class="top-row-right">✎</div>
+          </div>
+
+          <p class="amount-label">Осталось выплатить</p>
+          <div class="amount-main">3 070 000 ₽</div>
+          <div class="dashed-line"></div>
+          <div class="progress-text">Внесено 7 платежей из 29</div>
+
+          <div class="shortcuts-row">
+            <div class="shortcut">
+              <div class="shortcut-icon">📅</div>
+              <div>График<br />платежей</div>
+            </div>
+            <div class="shortcut">
+              <div class="shortcut-icon">💳</div>
+              <div>Погасить<br />досрочно</div>
+            </div>
+          </div>
+
+          <div class="next-payment-card">
+            <div class="next-title">Платёж 8 января</div>
+            <div class="next-sub">Списываем автоматически</div>
+
+            <div class="next-row">
+              <div>
+                <div class="next-row-label">Основной платёж</div>
+                <div><strong>69 500,00 ₽</strong></div>
+                <div id="accountText" class="next-row-muted">
+                  Счёт Альфа-карты ••8994
+                </div>
+              </div>
+            </div>
+
+            <div class="next-row auto-second">
+              <div>
+                <div class="next-row-label">Дополнительно спишем</div>
+                <div><strong>44 500 ₽</strong></div>
+              </div>
+              <div class="info-icon">i</div>
+            </div>
+
+            <button id="btnTopUp" class="primary-btn">
+              Пополнить на 44 500 ₽
+            </button>
+          </div>
+
+          <div class="segmented">
+            <button class="seg-btn active" data-tab="actions">Действия</button>
+            <button class="seg-btn" data-tab="history">История</button>
+            <button class="seg-btn" data-tab="about">О кредите</button>
+          </div>
+
+          <!-- вкладка Действия -->
+          <div id="tab-actions" class="tab-section active">
+            <ul class="action-list">
+              <li class="action-item">
+                <div class="action-item-icon">⏸</div>
+                <div class="action-item-label">Кредитные каникулы</div>
+              </li>
+              <li class="action-item clickable" id="openCalendarFromActions">
+                <div class="action-item-icon">📅</div>
+                <div class="action-item-label">График платежей</div>
+              </li>
+              <li class="action-item">
+                <div class="action-item-icon">💳</div>
+                <div class="action-item-label">Погасить досрочно</div>
+              </li>
+              <li class="action-item">
+                <div class="action-item-icon">🛡</div>
+                <div class="action-item-label">Застраховать</div>
+              </li>
+            </ul>
+
+            <div class="documents-title">Документы</div>
+            <div class="doc-item">
+              <div class="doc-icon">📄</div>
+              <div>Кредитный договор</div>
+            </div>
+          </div>
+
+          <!-- вкладка История -->
+          <div id="tab-history" class="tab-section">
+            <ul id="historyList" class="history-list"></ul>
+          </div>
+
+          <!-- вкладка О кредите -->
+          <div id="tab-about" class="tab-section">
+            <p style="font-size:13px;color:#5e626c;margin-top:4px;">
+              Сумма кредита — 3 500 000 ₽, ставка 12,9% годовых, срок 5 лет.
+              Ежемесячный платёж 69 500 ₽, списываем автоматически с выбранного
+              счёта. Вы можете изменить дату списания и подключить дополнительные
+              опции в разделе «Действия».
+            </p>
+          </div>
+        </div>
+
+        <!-- ЭКРАН 2. ВЫБОР СЧЁТА -->
+        <div id="screen-accounts" class="screen">
+          <div class="ribbon">МГУ · Альфа</div>
+
+          <div class="top-row">
+            <div class="top-row-left" id="backFromAccounts">‹</div>
+            <div class="top-row-title">Выбор счёта</div>
+            <div class="top-row-right"></div>
+          </div>
+          <p class="subtitle-muted">
+            Выберите счёт, с которого спишем дополнительный платёж.
+          </p>
+
+          <p class="select-summary">
+            К пополнению: <strong>44 500 ₽</strong>
+          </p>
+
+          <div id="accountsList" class="accounts-list"></div>
+        </div>
+
+        <!-- ЭКРАН 3. КАЛЕНДАРЬ ПЛАТЕЖЕЙ -->
+        <div id="screen-calendar" class="screen">
+          <div class="ribbon">МГУ · Альфа</div>
+
+          <div class="top-row">
+            <div class="top-row-left" id="backFromCalendar">‹</div>
+            <div class="top-row-title">Календарь</div>
+            <div class="top-row-right">i</div>
+          </div>
+
+          <div class="calendar-header">
+            <div class="month-row">
+              <span class="month-label">Январь</span>
+              <span>▼</span>
+            </div>
+            <div class="year-label">2026</div>
+          </div>
+
+          <div class="calendar-grid">
+            <!-- просто статичная сетка -->
+            <div></div><div></div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div>
+            <div>6</div><div>7</div>
+            <div class="day-cell"><div class="day-dot">8</div></div>
+            <div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div>
+            <div>15</div><div>16</div><div>17</div><div>18</div><div>19</div><div>20</div><div>21</div>
+            <div>22</div><div>23</div><div>24</div><div>25</div><div>26</div><div>27</div><div>28</div>
+            <div>29</div><div>30</div><div>31</div>
+          </div>
+
+          <div class="section-title">Ожидаемые события</div>
+          <ul id="eventsList" class="events-list"></ul>
+
+          <div class="add-row">
+            <span>Добавить новое событие</span>
+            <span>+</span>
+          </div>
+        </div>
+
+        <!-- ЭКРАН 4. ДЕТАЛИ ПЛАТЕЖА -->
+        <div id="screen-payment-detail" class="screen">
+          <div class="ribbon">МГУ · Альфа</div>
+
+          <div class="top-row">
+            <div class="top-row-left" id="backFromDetail">‹</div>
+            <div class="top-row-title">Платежка</div>
+            <div class="top-row-right"></div>
+          </div>
+
+          <div class="detail-wrapper">
+            <div class="detail-label">Платёж</div>
+
+            <div class="detail-row-main">
+              <div class="detail-left">
+                <div class="detail-icon">💸</div>
+                <div class="detail-name-block">
+                  <div id="detailTitle" class="detail-title">
+                    Кредит наличными
+                  </div>
+                  <div id="detailSub" class="detail-sub">
+                    Платеж по кредиту
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div id="detailAmount" class="detail-amount">
+                  139 000,00 ₽
+                </div>
+                <div id="detailDate" class="detail-date">30 января</div>
+              </div>
+            </div>
+
+            <div class="detail-divider"></div>
+
+            <div class="detail-row">
+              <span>Статус</span>
+              <span id="detailStatus">Проведён</span>
+            </div>
+            <div class="detail-row">
+              <span>Спишем со счёта</span>
+              <span id="detailFrom">••8994</span>
+            </div>
+            <div class="detail-row">
+              <span>Получатель</span>
+              <span>Альфа-Банк</span>
+            </div>
+            <div class="detail-row">
+              <span>Тип операции</span>
+              <span id="detailType">Погашение кредита</span>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="app-bar-right">ⓘ</div>
-    </header>
+    </div>
 
-    <!-- Экран с билетом -->
-    <main class="screen" id="ticket-screen">
-      <section class="ticket-card">
-        <div class="ticket-header">
-          <div class="ticket-label">Киноконцерт</div>
-          <div class="ticket-date">30 декабря · 20:00</div>
-        </div>
-
-        <div class="poster">
-          <div class="poster-title">Альфа Night в «Каро 11 Октябрь»</div>
-          <div class="poster-subtitle">
-            Специальный показ для студентов МГУ и клиентов Альфа-Банка
-          </div>
-          <div class="poster-meta">
-            <span><span class="poster-meta-dot"></span>Москва, ул. Новый Арбат, 24</span>
-            <span><span class="poster-meta-dot"></span>Зал 7 · Ряд 8 · Места 9–10</span>
-          </div>
-        </div>
-
-        <div class="ticket-info">
-          <div>
-            <div class="info-label">Покупатель</div>
-            <div class="info-value">Запрудная Анастасия</div>
-          </div>
-          <div>
-            <div class="info-label">Сумма</div>
-            <div class="info-value">1 390 ₽</div>
-          </div>
-          <div>
-            <div class="info-label">Оплата</div>
-            <div class="info-value">•• 1234</div>
-          </div>
-        </div>
-
-        <div class="ticket-qr-row">
-          <div class="qr-box">
-            QR<br />код
-          </div>
-          <div class="ticket-code">
-            <span>Номер билета</span>
-            AF-2025-12-30-0019
-          </div>
-        </div>
-      </section>
-
-      <button class="primary-btn" id="saveTicketBtn">
-        Сохранить билет
-      </button>
-
-      <p class="secondary-text">
-        Билет появится в разделе «История» и в календаре расходов.
-      </p>
-    </main>
-
-    <!-- Экран возврата денег -->
-    <main id="refund-screen" class="hidden">
-      <div class="refund-icon">↺</div>
-      <div class="refund-title">Заявка на возврат создана</div>
-      <div class="refund-amount" id="refund-amount">0 ₽</div>
-      <div class="refund-desc">
-        Мы вернём деньги на карту, с которой вы оплатили билет.<br />
-        Обычно это занимает не более 5 рабочих дней.
-      </div>
-      <div class="refund-note">
-        Подробности операции можно посмотреть в истории по счёту.
-      </div>
-    </main>
-
-    <!-- Нижняя навигация -->
+    <!-- нижнее меню -->
     <nav class="tabbar">
       <div class="tab-item">
         <span>⌂</span>
         Главный
       </div>
       <div class="tab-item">
-        <span>₽</span>
+        <span>⇄</span>
         Платежи
       </div>
       <div class="tab-item">
-        <span>★</span>
+        <span>❤</span>
         Выгода
       </div>
       <div class="tab-item active">
-        <span>🎟️</span>
+        <span>🕒</span>
         История
       </div>
       <div class="tab-item">
@@ -557,92 +968,276 @@
         Чаты
       </div>
     </nav>
-
-    <!-- Модальное окно ввода цифр -->
-    <div class="modal-backdrop hidden" id="codeModal">
-      <div class="modal">
-        <div class="modal-title">Сохранить билет</div>
-        <div class="modal-subtitle">
-          Введите сумму возврата или последние цифры карты — мы покажем экран
-          возврата денег на основе вашего ввода.
-        </div>
-
-        <label class="field-label" for="digitsInput">Сколько вернуть</label>
-        <div class="modal-input-wrap">
-          <input
-            id="digitsInput"
-            class="modal-input"
-            type="tel"
-            inputmode="numeric"
-            placeholder="Например, 1390"
-          />
-          <span class="modal-input-suffix">₽</span>
-        </div>
-
-        <div class="modal-error" id="modalError"></div>
-
-        <div class="modal-actions">
-          <button class="btn-text" id="cancelModal">Отмена</button>
-          <button class="btn-primary-small" id="confirmCode">Продолжить</button>
-        </div>
-      </div>
-    </div>
   </div>
 
   <script>
-    const saveTicketBtn = document.getElementById("saveTicketBtn");
-    const codeModal = document.getElementById("codeModal");
-    const cancelModalBtn = document.getElementById("cancelModal");
-    const confirmCodeBtn = document.getElementById("confirmCode");
-    const digitsInput = document.getElementById("digitsInput");
-    const modalError = document.getElementById("modalError");
+    // вспомогательные переменные
+    let currentScreen = "screen-credit";
+    let previousScreenForDetail = "screen-credit";
 
-    const ticketScreen = document.getElementById("ticket-screen");
-    const refundScreen = document.getElementById("refund-screen");
-    const refundAmountEl = document.getElementById("refund-amount");
+    function showScreen(id) {
+      document.querySelectorAll(".screen").forEach((el) => {
+        el.classList.remove("screen-active");
+      });
+      document.getElementById(id).classList.add("screen-active");
+      currentScreen = id;
+    }
 
-    // открыть модалку
-    saveTicketBtn.addEventListener("click", () => {
-      modalError.textContent = "";
-      digitsInput.value = "";
-      codeModal.classList.remove("hidden");
-      digitsInput.focus();
+    // --- ТАБЫ "Действия / История / О кредите" ---
+    const segButtons = document.querySelectorAll(".seg-btn");
+    segButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        segButtons.forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+
+        const tab = btn.dataset.tab;
+        document
+          .querySelectorAll(".tab-section")
+          .forEach((s) => s.classList.remove("active"));
+        document.getElementById("tab-" + tab).classList.add("active");
+      });
     });
 
-    // закрыть модалку
-    cancelModalBtn.addEventListener("click", () => {
-      codeModal.classList.add("hidden");
+    // --- ДАННЫЕ ДЛЯ СЧЁТОВ ---
+    const accounts = [
+      {
+        id: "8994",
+        label: "Счёт Альфа-карты",
+        amount: "69 500,00 ₽",
+        promo: "Получайте кэшбэк за оплату с Alfa Pay",
+      },
+      {
+        id: "4321",
+        label: "Накопительный счёт",
+        amount: "120 300,50 ₽",
+        promo: "3,5% годовых на остаток",
+      },
+      {
+        id: "7777",
+        label: "Карта для путешествий",
+        amount: "215 000,00 ₽",
+        promo: "0 ₽ за обслуживание и кэшбэк за отели",
+      },
+    ];
+
+    const accountsList = document.getElementById("accountsList");
+    const accountText = document.getElementById("accountText");
+
+    accounts.forEach((acc) => {
+      const card = document.createElement("div");
+      card.className = "account-card";
+      card.dataset.id = acc.id;
+
+      card.innerHTML = `
+        <div class="account-top">
+          <div>
+            <div class="account-label">${acc.label}</div>
+            <div class="account-amount">${acc.amount}</div>
+          </div>
+          <div class="account-card-mini">
+            <span>A</span>
+            <span>${acc.id}</span>
+            <span>МИР</span>
+          </div>
+        </div>
+        <div class="account-bottom">
+          <span>${acc.promo}</span>
+          <span>›</span>
+        </div>
+      `;
+      card.addEventListener("click", () => {
+        accountText.textContent = `${acc.label} ••${acc.id}`;
+        showScreen("screen-credit");
+      });
+
+      accountsList.appendChild(card);
     });
 
-    // клик по фону — тоже закрываем
-    codeModal.addEventListener("click", (e) => {
-      if (e.target === codeModal) {
-        codeModal.classList.add("hidden");
+    // --- ДАННЫЕ ДЛЯ ОЖИДАЕМЫХ СОБЫТИЙ (календарь) ---
+    const events = [
+      {
+        id: "auto",
+        title: "Автокредит",
+        amount: "44 500,00 ₽",
+        subtitle: "Платеж по акредиту",
+        date: "8 января",
+        iconBg: "#4f8cff",
+        iconEmoji: "🚗",
+      },
+      {
+        id: "mortgage",
+        title: "Кредит под залог недв...",
+        amount: "99 900,00 ₽",
+        subtitle: "Платеж по кредиту",
+        date: "9 января",
+        iconBg: "#b6d965",
+        iconEmoji: "%",
+      },
+      {
+        id: "cash",
+        title: "Кредит наличными",
+        amount: "139 000,00 ₽",
+        subtitle: "Платеж по кредиту",
+        date: "30 января",
+        iconBg: "#649bff",
+        iconEmoji: "💸",
+      },
+    ];
+
+    const eventsList = document.getElementById("eventsList");
+
+    function openDetailFromEvent(ev) {
+      previousScreenForDetail = "screen-calendar";
+      fillDetail(ev, "Запланирован", "Списывать автоматически");
+      showScreen("screen-payment-detail");
+    }
+
+    events.forEach((ev) => {
+      const li = document.createElement("li");
+      li.className = "event-item";
+
+      li.innerHTML = `
+        <div class="event-icon" style="background:${ev.iconBg}">
+          ${ev.iconEmoji}
+        </div>
+        <div class="event-main">
+          <div class="event-title">${ev.title}</div>
+          <div class="event-sub">${ev.subtitle}</div>
+        </div>
+        <div class="event-right">
+          <div class="event-amount">${ev.amount}</div>
+          <div class="event-date">${ev.date}</div>
+        </div>
+      `;
+      li.addEventListener("click", () => openDetailFromEvent(ev));
+
+      eventsList.appendChild(li);
+    });
+
+    // --- ДАННЫЕ ДЛЯ ИСТОРИИ (10 платежей, каждый месяц ранее) ---
+    const historyMonths = [
+      "января",
+      "февраля",
+      "марта",
+      "апреля",
+      "мая",
+      "июня",
+      "июля",
+      "августа",
+      "сентября",
+      "октября",
+      "ноября",
+      "декабря",
+    ];
+
+    const historyBase = { year: 2025, monthIndex: 9, day: 30 }; // 30 октября 2025
+    const historyList = document.getElementById("historyList");
+    const historyItems = [];
+
+    for (let i = 0; i < 10; i++) {
+      let mIndex = historyBase.monthIndex - i;
+      let year = historyBase.year;
+
+      while (mIndex < 0) {
+        mIndex += 12;
+        year -= 1;
       }
-    });
 
-    // подтверждение ввода
-    confirmCodeBtn.addEventListener("click", () => {
-      const raw = digitsInput.value.replace(/\s+/g, "");
-      const value = Number(raw);
+      const dateString = `${historyBase.day} ${historyMonths[mIndex]} ${year}`;
 
-      if (!raw || Number.isNaN(value) || value <= 0) {
-        modalError.textContent = "Введите сумму цифрами.";
-        return;
+      const itemData = {
+        title: "Кредит наличными",
+        amount: "139 000,00 ₽",
+        subtitle: "Платеж по кредиту",
+        date: dateString,
+      };
+      historyItems.push(itemData);
+
+      const li = document.createElement("li");
+      li.className = "history-item clickable";
+      li.innerHTML = `
+        <div class="history-item-icon">💸</div>
+        <div class="history-main">
+          <div class="history-title">${itemData.title}</div>
+          <div class="history-sub">${itemData.subtitle}</div>
+        </div>
+        <div class="history-amount">${itemData.amount}</div>
+        <div class="history-date">${itemData.date}</div>
+      `;
+
+      li.addEventListener("click", () => {
+        previousScreenForDetail = "screen-credit";
+        fillDetail(
+          {
+            title: itemData.title,
+            subtitle: itemData.subtitle,
+            amount: itemData.amount,
+            date: itemData.date,
+            iconBg: "#6ea6ff",
+            iconEmoji: "💸",
+          },
+          "Проведён",
+          "Погашение кредита"
+        );
+        showScreen("screen-payment-detail");
+      });
+
+      historyList.appendChild(li);
+    }
+
+    // --- ФУНКЦИЯ ЗАПОЛНЕНИЯ ЭКРАНА ДЕТАЛИ ---
+    const detailTitleEl = document.getElementById("detailTitle");
+    const detailSubEl = document.getElementById("detailSub");
+    const detailAmountEl = document.getElementById("detailAmount");
+    const detailDateEl = document.getElementById("detailDate");
+    const detailStatusEl = document.getElementById("detailStatus");
+    const detailTypeEl = document.getElementById("detailType");
+    const detailFromEl = document.getElementById("detailFrom");
+    const detailIcon = document.querySelector(".detail-icon");
+
+    function fillDetail(ev, statusText, typeText) {
+      detailTitleEl.textContent = ev.title;
+      detailSubEl.textContent = ev.subtitle;
+      detailAmountEl.textContent = ev.amount;
+      detailDateEl.textContent = ev.date;
+      detailStatusEl.textContent = statusText;
+      detailTypeEl.textContent = typeText;
+      // берём последние цифры из текущего счёта
+      const text = accountText.textContent || "Счёт ••8994";
+      const match = text.match(/••(\d{4})/);
+      detailFromEl.textContent = match ? "••" + match[1] : "••8994";
+
+      if (ev.iconBg) {
+        detailIcon.style.background = ev.iconBg;
       }
+    }
 
-      // форматируем сумму для экрана возврата
-      const formatted = value
-        .toString()
-        .replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    // --- ОБРАБОТЧИКИ НАВИГАЦИИ ---
 
-      refundAmountEl.textContent = formatted + " ₽";
-
-      // закрываем модалку и переключаемся на экран возврата
-      codeModal.classList.add("hidden");
-      ticketScreen.classList.add("hidden");
-      refundScreen.classList.remove("hidden");
+    // Пополнить -> выбор счёта
+    document.getElementById("btnTopUp").addEventListener("click", () => {
+      showScreen("screen-accounts");
     });
+
+    // Назад из выбора счёта
+    document
+      .getElementById("backFromAccounts")
+      .addEventListener("click", () => showScreen("screen-credit"));
+
+    // Открыть календарь из действий
+    document
+      .getElementById("openCalendarFromActions")
+      .addEventListener("click", () => showScreen("screen-calendar"));
+
+    // Назад из календаря
+    document
+      .getElementById("backFromCalendar")
+      .addEventListener("click", () => showScreen("screen-credit"));
+
+    // Назад с экрана детали
+    document
+      .getElementById("backFromDetail")
+      .addEventListener("click", () => showScreen(previousScreenForDetail));
   </script>
 </body>
 </html>
