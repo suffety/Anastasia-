@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Альфа–Афиша</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui,
+        sans-serif;
+      background: #101321;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .phone {
+      width: 390px;
+      height: 844px;
+      background: #f5f5f7;
+      border-radius: 32px;
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .status-bar {
+      height: 20px;
+      padding: 8px 16px 0;
+      font-size: 11px;
+      color: #555;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .app-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px 8px;
+      background: #f5f5f7;
+    }
+
+    .app-bar-left,
+    .app-bar-right {
+      width: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      font-size: 18px;
+      color: #111;
+    }
+
+    .app-bar-right {
+      justify-content: flex-end;
+    }
+
+    .app-bar-title {
+      text-align: center;
+      flex: 1;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #ff3b30;
+      color: #fff;
+      font-size: 10px;
+      margin-bottom: 4px;
+    }
+
+    .app-bar-title h1 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .app-bar-title span {
+      font-size: 11px;
+      color: #999;
+    }
+
+    .screen {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px 16px 0;
+    }
+
+    /* Карточка билета / афиши */
+
+    .ticket-card {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 16px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+      margin-bottom: 16px;
+    }
+
+    .ticket-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .ticket-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: #ff2e43;
+    }
+
+    .ticket-date {
+      font-size: 12px;
+      color: #888;
+    }
+
+    .poster {
+      background: radial-gradient(circle at top left, #ff476c, #3a2cff);
+      border-radius: 18px;
+      padding: 16px;
+      color: #fff;
+      margin-bottom: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .poster::before {
+      content: "";
+      position: absolute;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      border: 22px solid rgba(255, 255, 255, 0.16);
+      right: -40px;
+      bottom: -40px;
+    }
+
+    .poster-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      max-width: 70%;
+    }
+
+    .poster-subtitle {
+      font-size: 12px;
+      opacity: 0.9;
+      margin-bottom: 16px;
+    }
+
+    .poster-meta {
+      font-size: 11px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 12px;
+      opacity: 0.9;
+    }
+
+    .poster-meta span {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .poster-meta-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #fff;
+    }
+
+    .ticket-info {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-bottom: 12px;
+      font-size: 11px;
+    }
+
+    .info-label {
+      color: #a0a3aa;
+      margin-bottom: 2px;
+    }
+
+    .info-value {
+      color: #111;
+      font-weight: 500;
+    }
+
+    .ticket-qr-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 10px;
+      border-top: 1px dashed #e1e2e6;
+      margin-top: 4px;
+    }
+
+    .qr-box {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      border: 1px solid #e1e2e6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      color: #999;
+    }
+
+    .ticket-code {
+      font-size: 12px;
+      color: #555;
+    }
+
+    .ticket-code span {
+      display: block;
+      font-size: 10px;
+      color: #a0a3aa;
+      margin-bottom: 2px;
+    }
+
+    .primary-btn {
+      width: 100%;
+      border: none;
+      border-radius: 20px;
+      padding: 14px 16px;
+      background: #ff2e43;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .primary-btn:active {
+      transform: translateY(1px);
+      filter: brightness(0.95);
+    }
+
+    .secondary-text {
+      font-size: 11px;
+      color: #9a9ea8;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    /* Экран возврата */
+
+    .hidden {
+      display: none;
+    }
+
+    #refund-screen {
+      padding: 32px 24px 0;
+      text-align: center;
+    }
+
+    .refund-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 999px;
+      background: #e6f8ed;
+      margin: 0 auto 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 34px;
+      color: #1f9b4c;
+    }
+
+    .refund-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .refund-amount {
+      font-size: 24px;
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 10px;
+    }
+
+    .refund-desc {
+      font-size: 13px;
+      color: #6a6e77;
+      margin-bottom: 24px;
+    }
+
+    .refund-note {
+      font-size: 11px;
+      color: #9a9ea8;
+    }
+
+    /* Табы снизу */
+
+    .tabbar {
+      height: 70px;
+      border-top: 1px solid #dedfe3;
+      background: #ffffff;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding-bottom: 10px;
+    }
+
+    .tab-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      font-size: 10px;
+      color: #a1a4ad;
+    }
+
+    .tab-item span {
+      font-size: 18px;
+    }
+
+    .tab-item.active {
+      color: #111;
+      font-weight: 500;
+    }
+
+    /* Модалка */
+
+    .modal-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      z-index: 10;
+    }
+
+    .modal {
+      width: 100%;
+      max-width: 320px;
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 20px 18px 16px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+    }
+
+    .modal-title {
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .modal-subtitle {
+      font-size: 12px;
+      color: #7a7e89;
+      margin-bottom: 16px;
+    }
+
+    .field-label {
+      font-size: 11px;
+      color: #7a7e89;
+      margin-bottom: 4px;
+    }
+
+    .modal-input-wrap {
+      position: relative;
+      margin-bottom: 12px;
+    }
+
+    .modal-input {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid #d3d4da;
+      font-size: 15px;
+      outline: none;
+    }
+
+    .modal-input:focus {
+      border-color: #ff2e43;
+      box-shadow: 0 0 0 1px rgba(255, 46, 67, 0.2);
+    }
+
+    .modal-input-suffix {
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+      font-size: 12px;
+      color: #a0a3aa;
+    }
+
+    .modal-error {
+      font-size: 11px;
+      color: #ff2e43;
+      min-height: 14px;
+      margin-bottom: 6px;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .btn-text {
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      color: #7a7e89;
+      padding: 6px 8px;
+      cursor: pointer;
+    }
+
+    .btn-primary-small {
+      border: none;
+      background: #ff2e43;
+      color: #fff;
+      border-radius: 14px;
+      padding: 8px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-primary-small:active {
+      filter: brightness(0.95);
+      transform: translateY(1px);
+    }
+  </style>
+</head>
+<body>
+  <div class="phone">
+    <div class="status-bar">
+      <div>09:41</div>
+      <div>LTE ◉ 76%</div>
+    </div>
+
+    <!-- Верхняя панель -->
+    <header class="app-bar">
+      <div class="app-bar-left">‹</div>
+      <div class="app-bar-title">
+        <div class="tag">МГУ · Альфа</div>
+        <h1>Альфа–Афиша</h1>
+        <span>Билет на мероприятие</span>
+      </div>
+      <div class="app-bar-right">ⓘ</div>
+    </header>
+
+    <!-- Экран с билетом -->
+    <main class="screen" id="ticket-screen">
+      <section class="ticket-card">
+        <div class="ticket-header">
+          <div class="ticket-label">Киноконцерт</div>
+          <div class="ticket-date">30 декабря · 20:00</div>
+        </div>
+
+        <div class="poster">
+          <div class="poster-title">Альфа Night в «Каро 11 Октябрь»</div>
+          <div class="poster-subtitle">
+            Специальный показ для студентов МГУ и клиентов Альфа-Банка
+          </div>
+          <div class="poster-meta">
+            <span><span class="poster-meta-dot"></span>Москва, ул. Новый Арбат, 24</span>
+            <span><span class="poster-meta-dot"></span>Зал 7 · Ряд 8 · Места 9–10</span>
+          </div>
+        </div>
+
+        <div class="ticket-info">
+          <div>
+            <div class="info-label">Покупатель</div>
+            <div class="info-value">Запрудная Анастасия</div>
+          </div>
+          <div>
+            <div class="info-label">Сумма</div>
+            <div class="info-value">1 390 ₽</div>
+          </div>
+          <div>
+            <div class="info-label">Оплата</div>
+            <div class="info-value">•• 1234</div>
+          </div>
+        </div>
+
+        <div class="ticket-qr-row">
+          <div class="qr-box">
+            QR<br />код
+          </div>
+          <div class="ticket-code">
+            <span>Номер билета</span>
+            AF-2025-12-30-0019
+          </div>
+        </div>
+      </section>
+
+      <button class="primary-btn" id="saveTicketBtn">
+        Сохранить билет
+      </button>
+
+      <p class="secondary-text">
+        Билет появится в разделе «История» и в календаре расходов.
+      </p>
+    </main>
+
+    <!-- Экран возврата денег -->
+    <main id="refund-screen" class="hidden">
+      <div class="refund-icon">↺</div>
+      <div class="refund-title">Заявка на возврат создана</div>
+      <div class="refund-amount" id="refund-amount">0 ₽</div>
+      <div class="refund-desc">
+        Мы вернём деньги на карту, с которой вы оплатили билет.<br />
+        Обычно это занимает не более 5 рабочих дней.
+      </div>
+      <div class="refund-note">
+        Подробности операции можно посмотреть в истории по счёту.
+      </div>
+    </main>
+
+    <!-- Нижняя навигация -->
+    <nav class="tabbar">
+      <div class="tab-item">
+        <span>⌂</span>
+        Главный
+      </div>
+      <div class="tab-item">
+        <span>₽</span>
+        Платежи
+      </div>
+      <div class="tab-item">
+        <span>★</span>
+        Выгода
+      </div>
+      <div class="tab-item active">
+        <span>🎟️</span>
+        История
+      </div>
+      <div class="tab-item">
+        <span>⋯</span>
+        Чаты
+      </div>
+    </nav>
+
+    <!-- Модальное окно ввода цифр -->
+    <div class="modal-backdrop hidden" id="codeModal">
+      <div class="modal">
+        <div class="modal-title">Сохранить билет</div>
+        <div class="modal-subtitle">
+          Введите сумму возврата или последние цифры карты — мы покажем экран
+          возврата денег на основе вашего ввода.
+        </div>
+
+        <label class="field-label" for="digitsInput">Сколько вернуть</label>
+        <div class="modal-input-wrap">
+          <input
+            id="digitsInput"
+            class="modal-input"
+            type="tel"
+            inputmode="numeric"
+            placeholder="Например, 1390"
+          />
+          <span class="modal-input-suffix">₽</span>
+        </div>
+
+        <div class="modal-error" id="modalError"></div>
+
+        <div class="modal-actions">
+          <button class="btn-text" id="cancelModal">Отмена</button>
+          <button class="btn-primary-small" id="confirmCode">Продолжить</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const saveTicketBtn = document.getElementById("saveTicketBtn");
+    const codeModal = document.getElementById("codeModal");
+    const cancelModalBtn = document.getElementById("cancelModal");
+    const confirmCodeBtn = document.getElementById("confirmCode");
+    const digitsInput = document.getElementById("digitsInput");
+    const modalError = document.getElementById("modalError");
+
+    const ticketScreen = document.getElementById("ticket-screen");
+    const refundScreen = document.getElementById("refund-screen");
+    const refundAmountEl = document.getElementById("refund-amount");
+
+    // открыть модалку
+    saveTicketBtn.addEventListener("click", () => {
+      modalError.textContent = "";
+      digitsInput.value = "";
+      codeModal.classList.remove("hidden");
+      digitsInput.focus();
+    });
+
+    // закрыть модалку
+    cancelModalBtn.addEventListener("click", () => {
+      codeModal.classList.add("hidden");
+    });
+
+    // клик по фону — тоже закрываем
+    codeModal.addEventListener("click", (e) => {
+      if (e.target === codeModal) {
+        codeModal.classList.add("hidden");
+      }
+    });
+
+    // подтверждение ввода
+    confirmCodeBtn.addEventListener("click", () => {
+      const raw = digitsInput.value.replace(/\s+/g, "");
+      const value = Number(raw);
+
+      if (!raw || Number.isNaN(value) || value <= 0) {
+        modalError.textContent = "Введите сумму цифрами.";
+        return;
+      }
+
+      // форматируем сумму для экрана возврата
+      const formatted = value
+        .toString()
+        .replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+
+      refundAmountEl.textContent = formatted + " ₽";
+
+      // закрываем модалку и переключаемся на экран возврата
+      codeModal.classList.add("hidden");
+      ticketScreen.classList.add("hidden");
+      refundScreen.classList.remove("hidden");
+    });
+  </script>
+</body>
+</html>
